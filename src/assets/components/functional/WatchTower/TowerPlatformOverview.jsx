@@ -28,7 +28,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
       {
         key: "flipkart",
         label: "Flipkart",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.png",
+        logo: "/images/Flipkart.png",
         apiKey: "Flipkart",
       },
       {
