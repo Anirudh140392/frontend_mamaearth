@@ -72,6 +72,15 @@ const TowerForAll = ({ dateRange, formatDate, apiData, loading, error }) => {
           prevText: "vs Previous Month",
           chartData: transformGraphData(apiData.overview_metrics.All.Orders_graph),
         },
+         {
+          title: "GMV Units",
+          value: formatLargeNumber(apiData.overview_metrics.All.GMV_Units * 1000),
+          sub: "for MTD",
+          change: formatPercentage(apiData.overview_metrics.All.GMV_Units_change),
+          changeColor: getChangeColorClass(apiData.overview_metrics.All.GMV_Units_change),
+          prevText: "vs Previous Month",
+          chartData: transformGraphData(apiData.overview_metrics.All.GMV_graph),
+        },
       ];
     }
 

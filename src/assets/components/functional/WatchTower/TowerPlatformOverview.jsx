@@ -31,17 +31,11 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
         logo: "/images/Flipkart.png",
         apiKey: "Flipkart",
       },
-      {
-        key: "zepto",
-        label: "Zepto",
-        logo: "https://upload.wikimedia.org/wikipedia/en/7/7d/Logo_of_Zepto.png",
-        apiKey: "Zepto",
-      },
-      {
-        key: "instamart",
-        label: "Instamart",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Swiggy_Logo_2024.webp",
-        apiKey: "Instamart",
+       {
+        key: "blinkit",
+        label: "Blinkit",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Blinkit-yellow-rounded.svg",
+        apiKey: "Blinkit",
       },
     ];
 
@@ -247,21 +241,6 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
               }}
             >
               <div className="d-grid gap-3">
-                <div
-                  className="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-                  style={{
-                    width: 42,
-                    height: 34,
-                    position: "sticky",
-                    top: 8,
-                    zIndex: 6,
-                    background: "#fff",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                  }}
-                >
-                  <BsGrid3X3GapFill size={18} className="text-secondary" />
-                </div>
-
                 {platforms[0]?.columns.map((metric, i) => (
                   <Button
                     key={i}

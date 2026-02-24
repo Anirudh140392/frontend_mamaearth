@@ -10,16 +10,16 @@ import {
 
 const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => {
 
-  // Transform API data to categories format
-  const transformCategories = () => {
+  // Transform API data to categories format and move "Others" to the end
+  const categories = useMemo(() => {
     if (!apiData?.category_metrics) return [];
 
-    return Object.entries(apiData.category_metrics).map(([categoryName, platforms]) => {
+    const data = Object.entries(apiData.category_metrics).map(([categoryName, metrics]) => {
       const category = { name: categoryName };
 
       // Transform each platform's data
-      ['All', 'Flipkart', 'Zepto', 'Instamart'].forEach((platformKey) => {
-        const platformData = platforms[platformKey];
+      ['All', 'Flipkart', 'Blinkit'].forEach((platformKey) => {
+        const platformData = metrics[platformKey];
         const platformKeyLower = platformKey.toLowerCase();
 
         if (platformData) {
@@ -57,29 +57,23 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
 
       return category;
     });
-  };
 
-  const categories = transformCategories();
+    // Move "Others" to the last row
+    const rest = data.filter(c => c.name.toLowerCase() !== 'others');
+    const others = data.filter(c => c.name.toLowerCase() === 'others');
+    return [...rest, ...others];
+  }, [apiData]);
 
-  // Platforms (dynamic)
-  const platforms = useMemo(() => {
+  // Use hardcoded platforms to avoid any dynamic key issues
+  const platforms = ['all', 'flipkart', 'blinkit'];
+
+  // Extract all unique metric keys based on the "all" platform
+  const allMetricKeys = useMemo(() => {
     if (categories.length === 0) return [];
-    return Object.keys(categories[0]).filter((k) => k !== "name");
+    return Object.keys(categories[0].all);
   }, [categories]);
 
-  // Extract all unique metric keys dynamically
-  const allMetricKeys = useMemo(() => {
-    const keys = new Set();
-    categories.forEach((cat) => {
-      platforms.forEach((p) => {
-        const obj = cat[p];
-        if (obj) Object.keys(obj).forEach((k) => keys.add(k));
-      });
-    });
-    return Array.from(keys);
-  }, [categories, platforms]);
-
-  // Group metrics into pairs dynamically
+  // Group metrics into pairs for the dropdown
   const metricOptions = useMemo(() => {
     const pairs = [];
     for (let i = 0; i < allMetricKeys.length; i += 2) {
@@ -94,20 +88,20 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
     return pairs;
   }, [allMetricKeys]);
 
-  const [selectedMetric, setSelectedMetric] = useState(metricOptions[0]);
+  const [selectedMetric, setSelectedMetric] = useState(null);
 
-  // Update selected metric when options change
+  // Initialize selected metric
   useEffect(() => {
     if (metricOptions.length > 0 && !selectedMetric) {
       setSelectedMetric(metricOptions[0]);
     }
-  }, [metricOptions, selectedMetric]);
+  }, [metricOptions]);
 
   // Colored % display
   const renderChange = (val) => {
-    if (!val || val === "NA" || val === "-")
+    if (!val || val === "NA" || val === "-" || val === "0.00%")
       return <span className="text-muted small">{val || "-"}</span>;
-    const isPositive = val.startsWith("▲");
+    const isPositive = val.startsWith("▲") || (!val.startsWith("▼") && parseFloat(val) > 0);
     return (
       <span
         className={`fw-semibold ${isPositive ? "text-success" : "text-danger"}`}
@@ -249,7 +243,7 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
                   {platforms.map((p) => (
                     <th
                       key={p}
-                      colSpan={selectedMetric?.keys.length}
+                      colSpan={selectedMetric?.keys.length || 0}
                       className="text-center fw-semibold text-secondary"
                       style={{
                         position: "sticky",
@@ -258,7 +252,7 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
                         zIndex: 4,
                       }}
                     >
-                      {p.charAt(0).toUpperCase() + p.slice(1)}
+                      {p.toUpperCase()}
                     </th>
                   ))}
                 </tr>
@@ -284,7 +278,7 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
                           zIndex: 3,
                         }}
                       >
-                        {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}
+                        {key.toUpperCase().replace(/_/g, ' ')}
                       </th>
                     ))
                   )}
@@ -307,6 +301,8 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
                         left: 0,
                         zIndex: 2,
                         background: "#fff",
+                        textAlign: "left",
+                        paddingLeft: "2rem"
                       }}
                     >
                       {cat.name}
