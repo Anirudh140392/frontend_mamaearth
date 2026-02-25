@@ -292,176 +292,137 @@ const KeywordsComponent = () => {
         return keyword;
     };
 
-   const KeywordsColumnFlipkart = [
-    {
-        field: "keyword_name",
-        headerName: "TARGET",
-        minWidth: 150,
-        renderCell: (params) => {
-            const keywordDisplay = getKeywordDisplay(params.row.keyword_name);
-            const isClickable = keywordDisplay !== "N/A";
+    const KeywordsColumnFlipkart = [
+        {
+            field: "keyword_name",
+            headerName: "TARGET",
+            minWidth: 150,
+            renderCell: (params) => {
+                const keywordDisplay = getKeywordDisplay(params.row.keyword_name);
+                const isClickable = keywordDisplay !== "N/A";
 
-            return (
-                <div
-                    className={isClickable ? "text-icon-div cursor-pointer" : "text-icon-div"}
-                    onClick={
-                        isClickable
-                            ? () => handleKeywordClick(params.row.keyword_name, params.row.campaign_id)
-                            : undefined
-                    }
-                >
-                    <Typography
-                        className={isClickable ? "redirect" : ""}
-                        variant="body2"
-                        sx={{ color: isClickable ? "inherit" : "text.secondary" }}
-                    >
-                        {keywordDisplay}
-                    </Typography>
-                </div>
-            );
-        },
-    },
-
-    {
-        field: "match_type",
-        headerName: "MATCH TYPE",
-        minWidth: 150,
-        headerAlign: "left",
-        renderCell: (params) => {
-            const matchType = params.row.match_type;
-            return matchType && matchType !== "" ? matchType : "N/A";
-        },
-    },
-
-    {
-        field: "cpm",
-        headerName: "BID",
-        minWidth: 150,
-        renderCell: (params) => {
-            const keyword = params.row.keyword_name;
-            const keywordType = params.row.match_type;
-
-            if (!keyword || keyword === 0 || keyword === "0") {
                 return (
-                    <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
-                        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                            {params.row.cpm ? params.row.cpm.toFixed(2) : "N/A"}
+                    <div
+                        className={isClickable ? "text-icon-div cursor-pointer" : "text-icon-div"}
+                        onClick={
+                            isClickable
+                                ? () => handleKeywordClick(params.row.keyword_name, params.row.campaign_id)
+                                : undefined
+                        }
+                    >
+                        <Typography
+                            className={isClickable ? "redirect" : ""}
+                            variant="body2"
+                            sx={{ color: isClickable ? "inherit" : "text.secondary" }}
+                        >
+                            {keywordDisplay}
                         </Typography>
-                    </Box>
+                    </div>
                 );
-            }
-
-            return (
-                <BidCell
-                    value={params.row.cpm}
-                    campaignId={params.row.campaign_id}
-                    campaignType={params.row.type}
-                    keyword={keyword}
-                    keywordType={keywordType}
-                    platform={operator}
-                    onUpdate={handleBidUpdate}
-                    onSnackbarOpen={handleSnackbarOpen}
-                />
-            );
+            },
         },
-        type: "number",
-        align: "left",
-        headerAlign: "left",
-    },
 
-    {
-        field: "impressions",
-        headerName: "IMPRESSIONS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.impressions}
-                percentValue={params.row.impressions_change}
-            />
-        ),
-    },
+        {
+            field: "match_type",
+            headerName: "MATCH TYPE",
+            minWidth: 150,
+            headerAlign: "left",
+            renderCell: (params) => {
+                const matchType = params.row.match_type;
+                return matchType && matchType !== "" ? matchType : "N/A";
+            },
+        },
 
-    {
-        field: "clicks",
-        headerName: "CLICKS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.clicks}
-                percentValue={params.row.clicks_change}
-            />
-        ),
-    },
+        {
+            field: "campaign_name",
+            headerName: "CAMPAIGN",
+            minWidth: 300,
+        },
 
-    {
-        field: "cpc",
-        headerName: "CPC",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.cpc}
-                percentValue={params.row.cpc_change}
-            />
-        ),
-    },
+        {
+            field: "impressions",
+            headerName: "IMPRESSIONS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.impressions}
+                    percentValue={params.row.impressions_change}
+                />
+            ),
+        },
 
-    {
-        field: "spend",
-        headerName: "SPENDS",
-        minWidth: 170,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.spend}
-                percentValue={params.row.spend_change}
-            />
-        ),
-    },
+        {
+            field: "clicks",
+            headerName: "CLICKS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.clicks}
+                    percentValue={params.row.clicks_change}
+                />
+            ),
+        },
 
-    {
-        field: "orders",
-        headerName: "ORDERS",
-        minWidth: 170,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.orders}
-                percentValue={params.row.orders_change}
-            />
-        ),
-    },
+        {
+            field: "cpc",
+            headerName: "CPC",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.cpc}
+                    percentValue={params.row.cpc_change}
+                />
+            ),
+        },
 
-    {
-        field: "revenue",
-        headerName: "SALES",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.revenue}
-                percentValue={params.row.revenue_change}
-            />
-        ),
-    },
+        {
+            field: "spend",
+            headerName: "SPENDS",
+            minWidth: 170,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.spend}
+                    percentValue={params.row.spend_change}
+                />
+            ),
+        },
 
-    {
-        field: "roas",
-        headerName: "ROAS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.roas}
-                percentValue={params.row.roas_change}
-            />
-        ),
-    },
+        {
+            field: "orders",
+            headerName: "ORDERS",
+            minWidth: 170,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.orders}
+                    percentValue={params.row.orders_change}
+                />
+            ),
+        },
 
-    // ❌ total_atc not present in API response
-    // keep only if backend sends it later
+        {
+            field: "revenue",
+            headerName: "SALES",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.revenue}
+                    percentValue={params.row.revenue_change}
+                />
+            ),
+        },
 
-    {
-        field: "campaign_name",
-        headerName: "CAMPAIGN",
-        minWidth: 300,
-    },
-];
+        {
+            field: "roas",
+            headerName: "ROAS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.roas}
+                    percentValue={params.row.roas_change}
+                />
+            ),
+        },
+    ];
 
     const KeywordsColumnZepto = [
         {
@@ -499,40 +460,9 @@ const KeywordsComponent = () => {
             }
         },
         {
-            field: "bid",
-            headerName: "BID",
-            minWidth: 150,
-            renderCell: (params) => {
-                const keyword = params.row.keyword_name;
-                const keywordType = params.row.match_type;
-
-                if (!keyword || keyword === 0 || keyword === "0") {
-                    return (
-                        <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {params.row.bid ? params.row.bid.toFixed(2) : "N/A"}
-                            </Typography>
-                        </Box>
-                    );
-                }
-
-                return (
-                    <BidCell
-                        value={params.row.bid}
-                        campaignId={params.row.campaign_id}
-                        campaignType={params.row.campaign_type}
-                        keyword={keyword}
-                        keywordType={keywordType}
-                        platform={operator}
-                        brand_name={params.row.brand_name}
-                        onUpdate={handleBidUpdate}
-                        onSnackbarOpen={handleSnackbarOpen}
-                    />
-                );
-            },
-            type: "number",
-            align: "left",
-            headerAlign: "left",
+            field: "campaign_name",
+            headerName: "CAMPAIGN",
+            minWidth: 300,
         },
         {
             field: "impressions",
@@ -653,12 +583,6 @@ const KeywordsComponent = () => {
             type: "number",
             align: "left",
             headerAlign: "left",
-        },
-
-        {
-            field: "campaign_name",
-            headerName: "CAMPAIGN",
-            minWidth: 300,
         },
     ];
 
@@ -698,40 +622,9 @@ const KeywordsComponent = () => {
             }
         },
         {
-            field: "bid_api",
-            headerName: "BID",
-            minWidth: 150,
-            renderCell: (params) => {
-                const keyword = params.row.keyword;
-                const keywordType = params.row.match_type;
-
-                if (!keyword || keyword === 0 || keyword === "0") {
-                    return (
-                        <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {params.row.bid_api ? Number(params.row.bid_api).toFixed(2) : "N/A"}
-                            </Typography>
-                        </Box>
-                    );
-                }
-
-                return (
-                    <BidCell
-                        value={Number(params.row.bid_api)}
-                        campaignId={params.row.campaign_id}
-                        campaignType={params.row.campaign_type}
-                        keyword={keyword}
-                        keywordType={keywordType}
-                        platform={operator}
-                        brand_name={params.row.brand_name}
-                        onUpdate={handleBidUpdate}
-                        onSnackbarOpen={handleSnackbarOpen}
-                    />
-                );
-            },
-            type: "number",
-            align: "left",
-            headerAlign: "left",
+            field: "campaign_name",
+            headerName: "CAMPAIGN",
+            minWidth: 300,
         },
         {
             field: "impressions",
@@ -851,11 +744,6 @@ const KeywordsComponent = () => {
             type: "number",
             align: "left",
             headerAlign: "left",
-        },
-        {
-            field: "campaign_name",
-            headerName: "CAMPAIGN",
-            minWidth: 300,
         },
     ];
 

@@ -177,6 +177,16 @@ const PlacementsComponent = () => {
             ),
         },
         {
+            field: "campaign_name",
+            headerName: "CAMPAIGN NAME",
+            minWidth: 200,
+            // renderCell: (params) => (
+            //     <div className="text-icon-div cursor-pointer">
+            //         <Typography className="redirect" variant="body2">{params.row.campaign_name}</Typography>
+            //     </div>
+            // ),
+        },
+        {
             field: "bid",
             headerName: "BID",
             minWidth: 150,
@@ -319,11 +329,6 @@ const PlacementsComponent = () => {
             headerAlign: "left",
         },
         {
-            field: "campaign_name",
-            headerName: "CAMPAIGN",
-            minWidth: 300,
-        },
-        {
             field: "ad_group_id",
             headerName: "AD GROUP ID",
             minWidth: 200,
@@ -365,6 +370,7 @@ const PlacementsComponent = () => {
                     ) : (
                         <MuiDataTableComponent
                             isLoading={isLoading}
+
                             isExport={true}
                             columns={columns}
                             data={placementData.data || []}

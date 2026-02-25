@@ -139,34 +139,39 @@ const CampaignsComponent = (props, ref) => {
 
         {
             field: "campaign_status",
-            headerName: "STATUS",
-            minWidth: 100,
-            align: "center",
-            headerAlign: "center",
+            headerName: "STATE",
+            minWidth: 240,
+            align: "left",
+            headerAlign: "left",
             renderCell: (params) => {
                 const statusLabel = params.row.campaign_status;
-                const statusInt = params.row.status; // 0 or 1
 
                 if (updatingCampaigns[params.row.campaign_id]) {
                     return (
-                        <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                             <CircularProgress size={24} />
                         </Box>
                     );
                 }
 
                 return (
-                    <Switch
-                        checked={isStatusActive(statusLabel)}
-                        onChange={() =>
-                            handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label)
-                        }
-                    />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Switch
+                            checked={isStatusActive(statusLabel)}
+                            onChange={() =>
+                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label)
+                            }
+                        />
+                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                            {statusLabel}
+                        </Typography>
+                    </Box>
                 );
             },
             type: "singleSelect",
             valueOptions: STATUS_OPTIONS
         },
+
 
         {
             field: "ad_type_label",
@@ -370,10 +375,10 @@ const CampaignsComponent = (props, ref) => {
         },
         {
             field: "status",
-            headerName: "STATUS",
-            minWidth: 120,
-            align: "center",
-            headerAlign: "center",
+            headerName: "STATE",
+            minWidth: 180,
+            align: "left",
+            headerAlign: "left",
             renderCell: (params) => {
                 const status = params.row.status;
                 const campaignId = params.row.campaign_id;
@@ -382,7 +387,7 @@ const CampaignsComponent = (props, ref) => {
                 // Show loading spinner if this campaign is being updated
                 if (updatingCampaigns[campaignId]) {
                     return (
-                        <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                             <CircularProgress size={24} />
                         </Box>
                     );
@@ -394,22 +399,27 @@ const CampaignsComponent = (props, ref) => {
                 const isActive = isStatusActive(status);
 
                 return (
-                    <Switch
-                        checked={isActive}
-                        disabled={isDisabled}
-                        onChange={() => {
-                            // Show confirmation dialog before changing status
-                            // Include currentStatus so the API receives the current state (not the new one)
-                            setConfirmation({
-                                show: true,
-                                campaignId,
-                                newStatus: isActive ? "PAUSED" : "ACTIVE",
-                                currentStatus: status,
-                                platform: "Zepto",
-                                brandName
-                            });
-                        }}
-                    />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Switch
+                            checked={isActive}
+                            disabled={isDisabled}
+                            onChange={() => {
+                                // Show confirmation dialog before changing status
+                                // Include currentStatus so the API receives the current state (not the new one)
+                                setConfirmation({
+                                    show: true,
+                                    campaignId,
+                                    newStatus: isActive ? "PAUSED" : "ACTIVE",
+                                    currentStatus: status,
+                                    platform: "Zepto",
+                                    brandName
+                                });
+                            }}
+                        />
+                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                            {status}
+                        </Typography>
+                    </Box>
                 );
             },
             type: "singleSelect",
@@ -578,16 +588,16 @@ const CampaignsComponent = (props, ref) => {
         },
         {
             field: "final_status",
-            headerName: "STATUS",
-            minWidth: 100,
-            align: "center",
-            headerAlign: "center",
+            headerName: "STATE",
+            minWidth: 180,
+            align: "left",
+            headerAlign: "left",
             renderCell: (params) => {
                 const status = params.row.final_status;
 
                 if (updatingCampaigns[params.row.campaign_id]) {
                     return (
-                        <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                             <CircularProgress size={24} />
                         </Box>
                     );
@@ -598,14 +608,19 @@ const CampaignsComponent = (props, ref) => {
                 const isActive = isStatusActive(status);
 
                 return (
-                    <Switch
-                        checked={isActive}
-                        onChange={() => handleToggle(
-                            params.row.campaign_id,
-                            status,
-                            params.row.ad_type_label
-                        )}
-                    />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Switch
+                            checked={isActive}
+                            onChange={() => handleToggle(
+                                params.row.campaign_id,
+                                status,
+                                params.row.ad_type_label
+                            )}
+                        />
+                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                            {status}
+                        </Typography>
+                    </Box>
                 );
             },
             type: "singleSelect",
