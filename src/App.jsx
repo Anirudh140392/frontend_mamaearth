@@ -37,11 +37,13 @@ function App() {
           }`}
       >
         <Routes>
-          <Route path="/" element={isLoggedIn ? <PerformanceOverviewComponent /> : <Navigate to="/login" />} />
+          <Route path="/" element={isLoggedIn ? <WatchTowerData /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/keyword-analysis" element={isLoggedIn ? <SearchTermInsights /> : <Navigate to="/login" />} />
           <Route path="/product-analytics" element={isLoggedIn ? <ProductAnalyticsComponent /> : <Navigate to="/login" />} />
-                    <Route path="/watch-tower" element={isLoggedIn ? <WatchTowerData /> : <Navigate to="/login" />} />
+          <Route path="/performance-overview" element={isLoggedIn ? <PerformanceOverviewComponent /> : <Navigate to="/login" />} />
+          <Route path="/watch-tower" element={isLoggedIn ? <WatchTowerData /> : <Navigate to="/login" />} />
+
 
           <Route path="/rules" element={isLoggedIn ? <SmartControl /> : <Navigate to="/login" />} />
           <Route path="/negative-keywords" element={isLoggedIn ? <NegativeKeywordsComponent /> : <Navigate to="/login" />} />

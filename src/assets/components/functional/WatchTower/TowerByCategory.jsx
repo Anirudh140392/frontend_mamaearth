@@ -18,7 +18,7 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
       const category = { name: categoryName };
 
       // Transform each platform's data
-      ['All', 'Flipkart', 'Blinkit'].forEach((platformKey) => {
+      ['All', 'Flipkart'].forEach((platformKey) => {
         const platformData = metrics[platformKey];
         const platformKeyLower = platformKey.toLowerCase();
 
@@ -65,7 +65,7 @@ const TowerByCategory = ({ dateRange, formatDate, apiData, loading, error }) => 
   }, [apiData]);
 
   // Use hardcoded platforms to avoid any dynamic key issues
-  const platforms = ['all', 'flipkart', 'blinkit'];
+  const platforms = ['all', 'flipkart'];
 
   // Extract all unique metric keys based on the "all" platform
   const allMetricKeys = useMemo(() => {

@@ -53,7 +53,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
             { title: "ROAS", value: null, change: null },
             { title: "Impressions", value: null, change: null },
             { title: "Orders", value: null, change: null },
-            { title: "GMV Units", value: null, change: null },
+           
           ],
         };
       }
@@ -118,15 +118,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
             },
             meta: null,
           },
-          {
-            title: "GMV Units",
-            value: formatLargeNumber(platformData.GMV_Units * 1000),
-            change: {
-              text: formatPercentage(platformData.GMV_Units_change),
-              positive: platformData.GMV_Units_change >= 0,
-            },
-            meta: null,
-          },
+        
         ],
       };
     });

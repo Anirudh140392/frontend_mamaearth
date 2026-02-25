@@ -32,7 +32,7 @@ const Header = () => {
         .replace(/-/g, " ")
         .replace(/\b\w/g, (char) => char.toUpperCase());
     }
-    return "Performance Overview";
+    return "Watch Tower";
   };
 
   const { dateRange, formatDate } = useContext(overviewContext) || {
@@ -89,8 +89,7 @@ const Header = () => {
   // Check if brand dropdown should be shown
   const shouldShowBrandDropdown = () => {
     const isZeptoOperator = showSelectedOperator === "Zepto";
-    const isValidPage = location.pathname === "/" ||
-      location.pathname === "/performance-overview" ||
+    const isValidPage = location.pathname === "/performance-overview" ||
       location.pathname === "/campaigns" ||
       location.pathname === "/keywords" ||
       location.pathname === "/products";
@@ -144,7 +143,7 @@ const Header = () => {
         </div>
         <div className="d-flex actions-con">
           {/* Operator Dropdown - hide on Watch Tower page */}
-          {location.pathname !== "/watch-tower" && (
+          {location.pathname !== "/watch-tower" && location.pathname !== "/" && (
             <Dropdown className="operator-selected-tab">
               <Dropdown.Toggle variant="white" id="dropdown-basic">
                 {showSelectedOperator || "Select Platform"}
