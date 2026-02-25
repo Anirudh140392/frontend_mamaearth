@@ -31,7 +31,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
         logo: "/images/Flipkart.png",
         apiKey: "Flipkart",
       },
-       {
+      {
         key: "blinkit",
         label: "Blinkit",
         logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Blinkit-yellow-rounded.svg",
@@ -53,7 +53,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
             { title: "ROAS", value: null, change: null },
             { title: "Impressions", value: null, change: null },
             { title: "Orders", value: null, change: null },
-           
+
           ],
         };
       }
@@ -118,7 +118,7 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
             },
             meta: null,
           },
-        
+
         ],
       };
     });
@@ -232,20 +232,23 @@ const TowerPlatformOverview = ({ dateRange, formatDate, apiData, loading, error 
                 boxShadow: "4px 0 6px -3px rgba(0,0,0,0.1)",
               }}
             >
-              <div className="d-grid gap-3">
+              {/* Spacer to align with platform headers */}
+              <div style={{ height: 60, marginBottom: 8 }}></div>
+              <div className="d-grid">
                 {platforms[0]?.columns.map((metric, i) => (
                   <Button
                     key={i}
                     variant="light"
-                    className="text-start small border w-100 mb-3"
+                    className="text-start small border w-100"
                     style={{
                       borderRadius: 10,
                       padding: "0.65rem 0.75rem",
-                      height: 85,
+                      height: 103.5,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
                       backgroundColor: "#fff",
+                      marginBottom: 8
                     }}
                   >
                     <span>{metric.title}</span>
