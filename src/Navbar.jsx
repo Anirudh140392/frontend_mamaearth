@@ -385,7 +385,7 @@ const Navbar = () => {
                             <Accordion.Body>
                                 {["Amazon", "Zepto", "BigBasket", "Blinkit", "Swiggy", "Flipkart"].includes(operatorName) && (
                                     <RedirectLink
-                                        url={`/${operatorTypeParams === ""
+                                        url={`/watch-tower${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`
                                             : operatorTypeParams
                                             }`}
@@ -393,7 +393,7 @@ const Navbar = () => {
                                         pathName={pathName}
                                         onClick={() =>
                                             setPathName(
-                                                `/${operatorTypeParams === ""
+                                                `/watch-tower${operatorTypeParams === ""
                                                     ? `?operator=${OPERATOR.AMAZON}`
                                                     : operatorTypeParams
                                                 }`
@@ -408,7 +408,7 @@ const Navbar = () => {
                             <Accordion.Body>
                                 {["Blinkit", "Amazon", "Zepto", "Swiggy", "BigBasket", "Flipkart"].includes(operatorName) && (
                                     <RedirectLink
-                                        url={`/performance-overview${operatorTypeParams === ""
+                                        url={`/${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`
                                             : operatorTypeParams
                                             }`}
@@ -416,7 +416,7 @@ const Navbar = () => {
                                         pathName={pathName}
                                         onClick={() =>
                                             setPathName(
-                                                `/performance-overview${operatorTypeParams === ""
+                                                `/${operatorTypeParams === ""
                                                     ? `?operator=${OPERATOR.AMAZON}`
                                                     : operatorTypeParams
                                                 }`

@@ -37,7 +37,7 @@ function App() {
           }`}
       >
         <Routes>
-          <Route path="/" element={isLoggedIn ? <WatchTowerData /> : <Navigate to="/login" />} />
+          <Route path="/" element={isLoggedIn ? <PerformanceOverviewComponent /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/keyword-analysis" element={isLoggedIn ? <SearchTermInsights /> : <Navigate to="/login" />} />
           <Route path="/product-analytics" element={isLoggedIn ? <ProductAnalyticsComponent /> : <Navigate to="/login" />} />
