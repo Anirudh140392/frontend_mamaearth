@@ -20,7 +20,7 @@ const Header = () => {
 
 
   // Available operators - Flipkart, Zepto, and Blinkit
-  const availableOperators = ["Flipkart"];
+  const availableOperators = ["Flipkart", "Blinkit"];
 
   // Get unique brands for dropdown
 
@@ -53,11 +53,16 @@ const Header = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (showSelectedOperator) {
       newSearchParams.set("operator", showSelectedOperator);
+      // Redirect to Rules page if operator is Blinkit and not already there
+      if (showSelectedOperator === "Blinkit" && location.pathname !== "/rules") {
+        navigate(`/rules?${newSearchParams.toString()}`);
+        return;
+      }
     } else {
       newSearchParams.delete("operator");
     }
     setSearchParams(newSearchParams);
-  }, [showSelectedOperator]);
+  }, [showSelectedOperator, navigate, location.pathname, searchParams, setSearchParams]);
 
   // Handle brand selection change
   const handleBrandChange = (event) => {

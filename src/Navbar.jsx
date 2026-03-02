@@ -380,33 +380,35 @@ const Navbar = () => {
                 </div>
                 <div className="redirection-navbar-con">
                     <Accordion className="navbar-accordion">
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Control Tower</Accordion.Header>
-                            <Accordion.Body>
-                                {["Amazon", "Zepto", "BigBasket", "Blinkit", "Swiggy", "Flipkart"].includes(operatorName) && (
-                                    <RedirectLink
-                                        url={`/watch-tower${operatorTypeParams === ""
-                                            ? `?operator=${OPERATOR.AMAZON}`
-                                            : operatorTypeParams
-                                            }`}
-                                        label="Watch Tower"
-                                        pathName={pathName}
-                                        onClick={() =>
-                                            setPathName(
-                                                `/watch-tower${operatorTypeParams === ""
-                                                    ? `?operator=${OPERATOR.AMAZON}`
-                                                    : operatorTypeParams
-                                                }`
-                                            )
-                                        }
-                                    />
-                                )}
-                            </Accordion.Body>
-                        </Accordion.Item>
+                        {operatorName !== "Blinkit" && (
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header>Control Tower</Accordion.Header>
+                                <Accordion.Body>
+                                    {["Amazon", "Zepto", "BigBasket", "Swiggy", "Flipkart"].includes(operatorName) && (
+                                        <RedirectLink
+                                            url={`/watch-tower${operatorTypeParams === ""
+                                                ? `?operator=${OPERATOR.AMAZON}`
+                                                : operatorTypeParams
+                                                }`}
+                                            label="Watch Tower"
+                                            pathName={pathName}
+                                            onClick={() =>
+                                                setPathName(
+                                                    `/watch-tower${operatorTypeParams === ""
+                                                        ? `?operator=${OPERATOR.AMAZON}`
+                                                        : operatorTypeParams
+                                                    }`
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        )}
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Activation</Accordion.Header>
                             <Accordion.Body>
-                                {["Blinkit", "Amazon", "Zepto", "Swiggy", "BigBasket", "Flipkart"].includes(operatorName) && (
+                                {["Amazon", "Zepto", "Swiggy", "BigBasket", "Flipkart"].includes(operatorName) && (
                                     <RedirectLink
                                         url={`/${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`
@@ -478,7 +480,7 @@ const Navbar = () => {
                                         }
                                     />
                                 )}
-                                {!["Amazon"].includes(operatorName) && (
+                                {!["Amazon", "Blinkit"].includes(operatorName) && (
                                     <RedirectLink
                                         url={`/negative-keywords${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`
@@ -496,7 +498,7 @@ const Navbar = () => {
                                         }
                                     />
                                 )}
-                                {["Blinkit", "Amazon", "Zepto", "Swiggy", "Flipkart"].includes(operatorName) && (
+                                {["Amazon", "Zepto", "Swiggy", "Flipkart"].includes(operatorName) && (
                                     <RedirectLink
                                         url={`/history${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`
