@@ -498,7 +498,7 @@ const Navbar = () => {
                                         }
                                     />
                                 )}
-                                {["Amazon", "Zepto", "Swiggy", "Flipkart"].includes(operatorName) && (
+                                {["Amazon", "Zepto", "Swiggy", "Flipkart", "Blinkit"].includes(operatorName) && (
                                     <RedirectLink
                                         url={`/history${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`

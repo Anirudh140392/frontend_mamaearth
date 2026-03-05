@@ -53,8 +53,8 @@ const Header = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (showSelectedOperator) {
       newSearchParams.set("operator", showSelectedOperator);
-      // Redirect to Rules page if operator is Blinkit and not already there
-      if (showSelectedOperator === "Blinkit" && location.pathname !== "/rules") {
+      // Redirect to Rules page if operator is Blinkit and not on an allowed page
+      if (showSelectedOperator === "Blinkit" && !["/rules", "/history"].includes(location.pathname)) {
         navigate(`/rules?${newSearchParams.toString()}`);
         return;
       }
