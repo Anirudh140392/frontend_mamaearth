@@ -162,6 +162,14 @@ const Navbar = () => {
                     abortControllerRef.current.abort();
                 }
 
+                setError(null);
+
+                if (operatorName === "Blinkit") {
+                    setWalletBalance("N/A");
+                    setWalletLabel("Wallet Balance");
+                    return;
+                }
+
                 if (operatorName !== "Flipkart") {
                     setWalletBalance("N/A");
                     setWalletLabel("Wallet Balance");
