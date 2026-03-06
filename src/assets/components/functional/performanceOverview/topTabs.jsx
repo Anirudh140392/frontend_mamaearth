@@ -21,7 +21,7 @@ const TopTabs = (props) => {
             <div className="top-tabs-con">
 
                 <ul>
-                    {['Amazon', 'Zepto', 'Swiggy', 'BigBasket', 'Flipkart'].includes(operatorName) && <TabList
+                    {['Amazon', 'Zepto', 'Swiggy', 'BigBasket', 'Flipkart', 'Blinkit'].includes(operatorName) && <TabList
                         isShowCount={false}
                         tabText="Overview"
                         showActiveTab={showActiveTab}
@@ -36,7 +36,7 @@ const TopTabs = (props) => {
                             setShowActiveTab={setShowActiveTab}
                             setValue={PERFORMANCETABS.PORTFOLIOS} />
                     }
-                    {['Amazon', 'Zepto', 'Swiggy', 'BigBasket', 'Flipkart'].includes(operatorName) &&
+                    {['Amazon', 'Zepto', 'Swiggy', 'BigBasket', 'Flipkart', 'Blinkit'].includes(operatorName) &&
                         <TabList
                             isShowCount={true}
                             tabText="Campaigns"
@@ -60,7 +60,7 @@ const TopTabs = (props) => {
                             setShowActiveTab={setShowActiveTab}
                             setValue={PERFORMANCETABS.ADGROUPS} />
                     }
-                    {['Amazon', 'Zepto', 'BigBasket', 'Swiggy', 'Flipkart'].includes(operatorName) &&
+                    {['Amazon', 'Zepto', 'BigBasket', 'Swiggy', 'Flipkart', 'Blinkit'].includes(operatorName) &&
                         <TabList
                             isShowCount={true}
                             tabText="Keywords"

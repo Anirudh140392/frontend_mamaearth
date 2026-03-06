@@ -278,120 +278,120 @@ const ProductsComponent = () => {
         },
     ];
 
- const ProductsColumnFlipkart = [
-    {
-        field: "product_name",
-        headerName: "PRODUCT",
-        minWidth: 200,
-    },
+    const ProductsColumnFlipkart = [
+        {
+            field: "product_name",
+            headerName: "PRODUCT",
+            minWidth: 200,
+        },
 
-    {
-        field: "campaign_name",
-        headerName: "CAMPAIGN",
-        minWidth: 150,
-    },
+        {
+            field: "campaign_name",
+            headerName: "CAMPAIGN",
+            minWidth: 150,
+        },
 
-    {
-        field: "views",
-        headerName: "IMPRESSIONS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.views}
-                percentValue={params.row.views_diff}
-            />
-        ),
-    },
+        {
+            field: "views",
+            headerName: "IMPRESSIONS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.views}
+                    percentValue={params.row.views_diff}
+                />
+            ),
+        },
 
-    {
-        field: "actions",
-        headerName: "CLICKS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.actions}
-                percentValue={params.row.actions_diff}
-            />
-        ),
-    },
+        {
+            field: "actions",
+            headerName: "CLICKS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.actions}
+                    percentValue={params.row.actions_diff}
+                />
+            ),
+        },
 
-    // ❌ CPC not directly available in API
-    // (can be calculated if needed = ad_spend / actions)
+        // ❌ CPC not directly available in API
+        // (can be calculated if needed = ad_spend / actions)
 
-    {
-        field: "ad_spend",
-        headerName: "SPENDS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.ad_spend}
-                percentValue={params.row.ad_spend_diff}
-            />
-        ),
-    },
+        {
+            field: "ad_spend",
+            headerName: "SPENDS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.ad_spend}
+                    percentValue={params.row.ad_spend_diff}
+                />
+            ),
+        },
 
-    {
-        field: "direct_units_sold",
-        headerName: "ORDERS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.direct_units_sold}
-                percentValue={params.row.direct_units_sold_diff}
-            />
-        ),
-    },
+        {
+            field: "direct_units_sold",
+            headerName: "ORDERS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.direct_units_sold}
+                    percentValue={params.row.direct_units_sold_diff}
+                />
+            ),
+        },
 
-    {
-        field: "direct_revenue",
-        headerName: "SALES",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.direct_revenue}
-                percentValue={params.row.direct_revenue_diff}
-            />
-        ),
-    },
+        {
+            field: "direct_revenue",
+            headerName: "SALES",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.direct_revenue}
+                    percentValue={params.row.direct_revenue_diff}
+                />
+            ),
+        },
 
-    {
-        field: "action_rate",
-        headerName: "CTR",
-        minWidth: 150,
-        renderCell: (params) => (
-            <NewPercentageDataComponent
-                firstValue={params.row.action_rate}
-                secValue={params.row.action_rate_diff}
-            />
-        ),
-    },
+        {
+            field: "action_rate",
+            headerName: "CTR",
+            minWidth: 150,
+            renderCell: (params) => (
+                <NewPercentageDataComponent
+                    firstValue={params.row.action_rate}
+                    secValue={params.row.action_rate_diff}
+                />
+            ),
+        },
 
-   
 
-    {
-        field: "cvr",
-        headerName: "CVR",
-        minWidth: 150,
-        renderCell: (params) => (
-            <NewPercentageDataComponent
-                firstValue={params.row.cvr}
-                secValue={params.row.cvr_diff}
-            />
-        ),
-    },
 
-    {
-        field: "roi_direct",
-        headerName: "ROAS",
-        minWidth: 150,
-        renderCell: (params) => (
-            <ColumnPercentageDataComponent
-                mainValue={params.row.roi_direct}
-                percentValue={params.row.roi_direct_diff}
-            />
-        ),
-    },
-];
+        {
+            field: "cvr",
+            headerName: "CVR",
+            minWidth: 150,
+            renderCell: (params) => (
+                <NewPercentageDataComponent
+                    firstValue={params.row.cvr}
+                    secValue={params.row.cvr_diff}
+                />
+            ),
+        },
+
+        {
+            field: "roi_direct",
+            headerName: "ROAS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.roi_direct}
+                    percentValue={params.row.roi_direct_diff}
+                />
+            ),
+        },
+    ];
 
     const ProductsColumnSwiggy = [
         {
@@ -556,7 +556,7 @@ const ProductsComponent = () => {
     };
 
     const getProductsData = async (forceRefresh = false) => {
-        if (!operator || operator === "Swiggy" || operator === "Blinkit") return;
+        if (!operator || operator === "Swiggy") return;
 
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
@@ -648,7 +648,7 @@ const ProductsComponent = () => {
         const timeout = setTimeout(() => {
             if (localStorage.getItem("accessToken")) {
                 // Prevent API call for Swiggy and Blinkit
-                if (operator !== "Swiggy" && operator !== "Blinkit") {
+                if (operator !== "Swiggy") {
                     getProductsData();
                 }
             }

@@ -229,9 +229,10 @@ const Navbar = () => {
                 setWalletLabel(label);
 
             } catch (err) {
-                if (err.name !== 'AbortError') {
+                if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
                     console.error("Wallet fetch failed:", err);
-                    setError('Failed to fetch wallet balance');
+                    // We don't call setError here anymore to prevent crashing the entire sidebar
+                    // if only the wallet balance fetch fails.
                     setWalletBalance("N/A");
                     setWalletLabel("Wallet Balance");
 
@@ -416,7 +417,7 @@ const Navbar = () => {
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Activation</Accordion.Header>
                             <Accordion.Body>
-                                {["Amazon", "Zepto", "Swiggy", "BigBasket", "Flipkart"].includes(operatorName) && (
+                                {["Amazon", "Zepto", "Swiggy", "BigBasket", "Flipkart", "Blinkit"].includes(operatorName) && (
                                     <RedirectLink
                                         url={`/${operatorTypeParams === ""
                                             ? `?operator=${OPERATOR.AMAZON}`

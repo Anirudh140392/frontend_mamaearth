@@ -86,7 +86,197 @@ const CampaignsComponent = (props, ref) => {
         );
     };
 
-    const CampaignsColumnFlipkart = [
+    const CampaignsColumnBlinkit = [
+        {
+            field: "campaign_name",
+            headerName: "CAMPAIGN",
+            minWidth: 200,
+            renderCell: (params) => (
+                <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 0.5, cursor: "pointer" }}
+                    onClick={() =>
+                        handleCampaignClick(params.row.campaign_name, params.row.campaign_id)
+                    }
+                    className="redirect"
+                >
+                    {params.row.campaign_name}
+                </Box>
+            ),
+        },
+
+        {
+            field: "budget",
+            headerName: "BUDGET",
+            minWidth: 200,
+            renderCell: (params) => (
+                <BudgetCell
+                    status={params.row.campaign_status}
+                    value={params.row.budget}
+                    campaignId={params.row.campaign_id}
+                    adType={params.row.ad_type}
+                    ad_type_label={params.row.ad_type_label}
+                    brand={params.row.brand}
+                    endDate={params.row.end_date || null}
+                    platform={operator}
+                    onUpdate={async (campaignId, newBudget) => {
+                        setCampaignsData(prev => ({
+                            ...prev,
+                            data: prev.data.map(c =>
+                                c.campaign_id === campaignId
+                                    ? { ...c, budget: newBudget }
+                                    : c
+                            )
+                        }));
+                        await handleRefresh();
+                    }}
+                    onSnackbarOpen={handleSnackbarOpen}
+                />
+            ),
+            type: "number",
+            align: "left",
+            headerAlign: "left",
+        },
+
+        {
+            field: "status",
+            headerName: "STATE",
+            minWidth: 240,
+            align: "left",
+            headerAlign: "left",
+            renderCell: (params) => {
+                const statusLabel = params.row.status;
+
+                if (updatingCampaigns[params.row.campaign_id]) {
+                    return (
+                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
+                            <CircularProgress size={24} />
+                        </Box>
+                    );
+                }
+
+                return (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Switch
+                            checked={isStatusActive(statusLabel)}
+                            onChange={() =>
+                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label)
+                            }
+                        />
+                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                            {statusLabel}
+                        </Typography>
+                    </Box>
+                );
+            },
+            type: "singleSelect",
+            valueOptions: STATUS_OPTIONS
+        },
+
+
+        {
+            field: "campaign_type",
+            headerName: "CAMPAIGN TYPE",
+            minWidth: 155,
+        },
+
+        {
+            field: "impressions",
+            headerName: "IMPRESSIONS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.impressions}
+                    percentValue={params.row.impressions_change}
+                />
+            ),
+        },
+
+        {
+            field: "clicks",
+            headerName: "CLICKS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.clicks}
+                    percentValue={params.row.clicks_change}
+                />
+            ),
+        },
+
+        {
+            field: "cpc",
+            headerName: "CPC",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.cpc}
+                    percentValue={params.row.cpc_change}
+                />
+            ),
+        },
+
+        {
+            field: "spend",
+            headerName: "SPENDS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.spend}
+                    percentValue={params.row.spend_change}
+                />
+            ),
+        },
+
+        {
+            field: "orders",
+            headerName: "ORDERS",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.orders}
+                    percentValue={params.row.orders_change}
+                />
+            ),
+        },
+
+        {
+            field: "sales",
+            headerName: "SALES",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.sales}
+                    percentValue={params.row.sales_change}
+                />
+            ),
+        },
+
+       
+        {
+            field: "avg_cpm",
+            headerName: "CPM",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.avg_cpm}
+                    percentValue={params.row.avg_cpm_change}
+                />
+            ),
+        },
+
+        {
+            field: "roas",
+            headerName: "ROI",
+            minWidth: 150,
+            renderCell: (params) => (
+                <ColumnPercentageDataComponent
+                    mainValue={params.row.roas}
+                    percentValue={params.row.roas_change}
+                />
+            ),
+        }
+    ];
+     const CampaignsColumnFlipkart = [
         {
             field: "campaign_name",
             headerName: "CAMPAIGN",
@@ -286,420 +476,9 @@ const CampaignsComponent = (props, ref) => {
             ),
         }
     ];
-    const CampaignsColumnZepto = [
-        {
-            field: "campaign_name",
-            headerName: "CAMPAIGN",
-            minWidth: 200,
-            renderCell: (params) => (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                    <Box sx={{ cursor: "pointer" }}>
-                        {params.row.campaign_name}
-                    </Box>
-                </Box>
-            ),
-        },
-        {
-            field: "daily_budget",
-            headerName: "BUDGET",
-            minWidth: 200,
-            renderCell: (params) => (
-                <BudgetCell
-                    value={params.row.daily_budget}
-                    campaignId={params.row.campaign_id}
-                    platform={operator}
-                    brand_name={params.row.brand_name}
-                    ad_type_label={params.row.ad_type_label}
-                    endDate={params.row.end_date || null}
-                    onUpdate={async (campaignId, newBudget) => {
-                        console.log("Updating Zepto campaign budget:", campaignId, "New budget:", newBudget);
-                        try {
-                            // Clear all campaign caches first
-                            await new Promise((resolve) => {
-                                const keysToRemove = [];
-                                for (let i = 0; i < localStorage.length; i++) {
-                                    const key = localStorage.key(i);
-                                    if (key && key.includes('/mamaearth/campaign')) {
-                                        keysToRemove.push(key);
-                                    }
-                                }
-                                keysToRemove.forEach(key => localStorage.removeItem(key));
-                                console.log(`Cleared ${keysToRemove.length} campaign cache entries`);
-                                resolve();
-                            });
+  
 
-                            // Optimistically update local state
-                            setCampaignsData(prevData => ({
-                                ...prevData,
-                                data: prevData.data.map(campaign =>
-                                    campaign.campaign_id === campaignId
-                                        ? { ...campaign, daily_budget: newBudget }
-                                        : campaign
-                                )
-                            }));
-
-                            // Step 1: Build URL and cache key for refresh
-                            const startDate = formatDate(dateRange[0].startDate);
-                            const endDate = formatDate(dateRange[0].endDate);
-                            const ts = `&_=${Date.now()}`;
-
-                            let url = `https://react-api-script.onrender.com/mamaearth/campaign?start_date=${startDate}&end_date=${endDate}&platform=${operator}${ts}`;
-                            if (selectedBrand && selectedBrand.trim() !== "") {
-                                url += `&brand_name=${encodeURIComponent(selectedBrand)}`;
-                            }
-
-                            const cacheKey = `cache:GET:${url}`;
-
-                            // Step 2: Clear cache asynchronously
-                            await new Promise((resolve) => {
-                                localStorage.removeItem(cacheKey);
-                                resolve();
-                            });
-
-                            // Fetch fresh data immediately
-                            await handleRefresh();
-
-                            // Show success message
-
-                        } catch (error) {
-                            console.error("Error during budget update refresh:", error);
-                            handleSnackbarOpen("Failed to refresh after budget update", "error");
-                        }
-                    }}
-                    onSnackbarOpen={handleSnackbarOpen}
-                />
-            ),
-            type: "number",
-            align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "status",
-            headerName: "STATE",
-            minWidth: 180,
-            align: "left",
-            headerAlign: "left",
-            renderCell: (params) => {
-                const status = params.row.status;
-                const campaignId = params.row.campaign_id;
-                const brandName = params.row.brand_name;
-
-                // Show loading spinner if this campaign is being updated
-                if (updatingCampaigns[campaignId]) {
-                    return (
-                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
-                            <CircularProgress size={24} />
-                        </Box>
-                    );
-                }
-
-                // Disable toggle for ENDED and DAILY_BUDGET_EXHAUSTED
-                const isDisabled = status === "ENDED" || status === "DAILY_BUDGET_EXHAUSTED";
-                // Toggle ON for ACTIVE, TOTAL_BUDGET_MET, BUDGET_MET, LIVE, etc.
-                const isActive = isStatusActive(status);
-
-                return (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Switch
-                            checked={isActive}
-                            disabled={isDisabled}
-                            onChange={() => {
-                                // Show confirmation dialog before changing status
-                                // Include currentStatus so the API receives the current state (not the new one)
-                                setConfirmation({
-                                    show: true,
-                                    campaignId,
-                                    newStatus: isActive ? "PAUSED" : "ACTIVE",
-                                    currentStatus: status,
-                                    platform: "Zepto",
-                                    brandName
-                                });
-                            }}
-                        />
-                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-                            {status}
-                        </Typography>
-                    </Box>
-                );
-            },
-            type: "singleSelect",
-        },
-        {
-            field: "impressions",
-            headerName: "IMPRESSIONS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.impressions} percentValue={params.row.impressions_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "clicks",
-            headerName: "CLICKS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.clicks} percentValue={params.row.clicks_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "cpc",
-            headerName: "CPC",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.cpc} percentValue={params.row.cpc_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-
-        {
-            field: "spend",
-            headerName: "SPENDS",
-            minWidth: 170,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.spend} percentValue={params.row.spend_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "orders",
-            headerName: "ORDERS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.orders} percentValue={params.row.orders_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "sales",
-            headerName: "SALES",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.sales} percentValue={params.row.sales_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "cpm",
-            headerName: "CPM",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.cpm} percentValue={params.row.cpm_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "roas",
-            headerName: "ROAS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.roas} percentValue={params.row.roas_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-    ];
-
-    const CampaignsColumnSwiggy = [
-        {
-            field: "campaign_name",
-            headerName: "CAMPAIGN",
-            minWidth: 200,
-            renderCell: (params) => (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                    <Box sx={{ cursor: "pointer" }}>
-                        {params.row.campaign_name}
-                    </Box>
-                </Box>
-            ),
-        },
-        {
-            field: "api_budget",
-            headerName: "BUDGET",
-            minWidth: 200,
-            renderCell: (params) => <BudgetCell
-                status={params.row.campaign_status}
-                value={params.row.api_budget}
-                campaignId={params.row.campaign_id}
-                adType={params.row.ad_type}
-                ad_type_label={params.row.ad_type_label}
-                brand={params.row.brand}
-                endDate={params.row.end_date || null}
-                platform={operator}
-                onUpdate={async (campaignId, newBudget) => {
-                    console.log("Updating campaign:", campaignId, "New budget:", newBudget);
-                    try {
-                        // Clear all campaign caches first
-                        await new Promise((resolve) => {
-                            const keysToRemove = [];
-                            for (let i = 0; i < localStorage.length; i++) {
-                                const key = localStorage.key(i);
-                                if (key && key.includes('/mamaearth/campaign')) {
-                                    keysToRemove.push(key);
-                                }
-                            }
-                            keysToRemove.forEach(key => localStorage.removeItem(key));
-                            console.log(`Cleared ${keysToRemove.length} campaign cache entries`);
-                            resolve();
-                        });
-
-                        // Optimistically update local state
-                        setCampaignsData(prevData => ({
-                            ...prevData,
-                            data: prevData.data.map(campaign =>
-                                campaign.campaign_id === campaignId
-                                    ? { ...campaign, Budget: newBudget }
-                                    : campaign
-                            )
-                        }));
-
-                        // Step 1: Build URL and cache key for refresh
-                        const startDate = formatDate(dateRange[0].startDate);
-                        const endDate = formatDate(dateRange[0].endDate);
-                        const ts = `&_=${Date.now()}`;
-
-                        let url = `https://react-api-script.onrender.com/mamaearth/campaign?start_date=${startDate}&end_date=${endDate}&platform=${operator}${ts}`;
-                        if (selectedBrand && selectedBrand.trim() !== "") {
-                            url += `&brand_name=${encodeURIComponent(selectedBrand)}`;
-                        }
-
-                        const cacheKey = `cache:GET:${url}`;
-
-                        // Step 2: Clear cache asynchronously
-                        await new Promise((resolve) => {
-                            localStorage.removeItem(cacheKey);
-                            resolve();
-                        });
-
-                        // Fetch fresh data immediately
-                        await handleRefresh();
-
-                        // Show success message
-
-                    } catch (error) {
-                        console.error("Error during budget update refresh:", error);
-                        handleSnackbarOpen("Failed to refresh after budget update", "error");
-                    }
-                }}
-                onSnackbarOpen={handleSnackbarOpen}
-            />,
-            headerAlign: "left",
-            type: "number",
-            align: "left",
-        },
-        {
-            field: "final_status",
-            headerName: "STATE",
-            minWidth: 180,
-            align: "left",
-            headerAlign: "left",
-            renderCell: (params) => {
-                const status = params.row.final_status;
-
-                if (updatingCampaigns[params.row.campaign_id]) {
-                    return (
-                        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
-                            <CircularProgress size={24} />
-                        </Box>
-                    );
-                }
-
-                // Toggle is ON for ACTIVE or ON_HOLD
-                // Toggle is OFF for STOPPED
-                const isActive = isStatusActive(status);
-
-                return (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Switch
-                            checked={isActive}
-                            onChange={() => handleToggle(
-                                params.row.campaign_id,
-                                status,
-                                params.row.ad_type_label
-                            )}
-                        />
-                        <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-                            {status}
-                        </Typography>
-                    </Box>
-                );
-            },
-            type: "singleSelect",
-            valueOptions: STATUS_OPTIONS
-        },
-        {
-            field: "impressions",
-            headerName: "IMPRESSIONS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.impressions} percentValue={params.row.impressions_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "clicks",
-            headerName: "CLICKS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.clicks} percentValue={params.row.clicks_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "cpc",
-            headerName: "CPC",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.cpc} percentValue={params.row.cpc_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "spend",
-            headerName: "SPENDS",
-            minWidth: 170,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.spend} percentValue={params.row.spend_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "orders",
-            headerName: "ORDERS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.orders} percentValue={params.row.orders_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "revenue",
-            headerName: "SALES",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.revenue} percentValue={params.row.revenue_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "cpm",
-            headerName: "CPM",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.cpm} percentValue={params.row.cpm_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-        {
-            field: "roas",
-            headerName: "ROAS",
-            minWidth: 150,
-            renderCell: (params) => (
-                <ColumnPercentageDataComponent mainValue={params.row.roas} percentValue={params.row.roas_change} />
-            ), type: "number", align: "left",
-            headerAlign: "left",
-        },
-    ];
-
+ 
 
     const normalizedBrands = useMemo(() => {
         const source = brands;
@@ -917,8 +696,8 @@ const CampaignsComponent = (props, ref) => {
 
     const columns = useMemo(() => {
         if (operator === "Flipkart") return CampaignsColumnFlipkart;
-        if (operator === "Zepto") return CampaignsColumnZepto;
-        if (operator === "Swiggy") return CampaignsColumnSwiggy;
+       
+        if (operator === "Blinkit") return CampaignsColumnBlinkit;
         return [];
     }, [operator, brands, updatingCampaigns]);
 

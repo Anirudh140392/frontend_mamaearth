@@ -49,7 +49,7 @@ const AdGroupsComponent = () => {
 
         try {
             const response = await fetch(
-                `https://react-api-script.onrender.com/mamaearth/adgroups?start_date=${startDate}&end_date=${endDate}&platform=Amazon`,
+                `https://react-api-script.onrender.com/mamaearth/adgroups?start_date=${startDate}&end_date=${endDate}&platform=${operator}`,
                 {
                     method: "GET",
                     headers: {
@@ -63,7 +63,7 @@ const AdGroupsComponent = () => {
             if (!response.ok) throw new Error("Failed to fetch keyword data");
 
             const result = await response.json();
-           
+
             setAdGroupData(result.data || []);
 
         } catch (error) {
@@ -105,17 +105,17 @@ const AdGroupsComponent = () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                 });
+            });
 
             if (!response.ok) throw new Error("Failed to update adgroup status");
 
             // Update local state
-             setAdGroupData(prev =>
+            setAdGroupData(prev =>
                 prev.map(row =>
                     row.ad_group_id === adGroupId && row.campaign_id === campaignId && row.campaign_type === campaignType ? { ...row, status: row.status === 1 ? 0 : 1 } : row
                 )
             );
-           
+
         } catch (err) {
             console.error("Error updating adgroup status:", err);
         } finally {
@@ -199,7 +199,7 @@ const AdGroupsComponent = () => {
       </div>
     );
   },*/
-                 
+
         },
         {
             field: "status",
@@ -265,7 +265,7 @@ const AdGroupsComponent = () => {
                 />
             )
         },
-         {
+        {
             field: "clicks_curr",
             headerName: "CLICKS",
             width: 150,
