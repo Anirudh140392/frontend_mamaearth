@@ -137,6 +137,8 @@ const CampaignsComponent = (props, ref) => {
             headerAlign: "left",
         },
 
+
+
         {
             field: "status",
             headerName: "STATE",
@@ -251,7 +253,7 @@ const CampaignsComponent = (props, ref) => {
             ),
         },
 
-       
+
         {
             field: "avg_cpm",
             headerName: "CPM",
@@ -276,7 +278,7 @@ const CampaignsComponent = (props, ref) => {
             ),
         }
     ];
-     const CampaignsColumnFlipkart = [
+    const CampaignsColumnFlipkart = [
         {
             field: "campaign_name",
             headerName: "CAMPAIGN",
@@ -314,6 +316,40 @@ const CampaignsComponent = (props, ref) => {
                             data: prev.data.map(c =>
                                 c.campaign_id === campaignId
                                     ? { ...c, Budget: newBudget }
+                                    : c
+                            )
+                        }));
+                        await handleRefresh();
+                    }}
+                    onSnackbarOpen={handleSnackbarOpen}
+                />
+            ),
+            type: "number",
+            align: "left",
+            headerAlign: "left",
+        },
+
+        {
+            field: "daily_budget",
+            headerName: "DAILY BUDGET",
+            minWidth: 200,
+            renderCell: (params) => (
+                <BudgetCell
+                    status={params.row.campaign_status}
+                    value={params.row.daily_budget}
+                    campaignId={params.row.campaign_id}
+                    adType={params.row.ad_type}
+                    ad_type_label={params.row.ad_type_label}
+                    brand={params.row.brand}
+                    endDate={params.row.end_date || null}
+                    platform={operator}
+                    payloadKey="daily_budget"
+                    onUpdate={async (campaignId, newBudget) => {
+                        setCampaignsData(prev => ({
+                            ...prev,
+                            data: prev.data.map(c =>
+                                c.campaign_id === campaignId
+                                    ? { ...c, daily_budget: newBudget }
                                     : c
                             )
                         }));
@@ -476,9 +512,9 @@ const CampaignsComponent = (props, ref) => {
             ),
         }
     ];
-  
 
- 
+
+
 
     const normalizedBrands = useMemo(() => {
         const source = brands;
@@ -696,7 +732,7 @@ const CampaignsComponent = (props, ref) => {
 
     const columns = useMemo(() => {
         if (operator === "Flipkart") return CampaignsColumnFlipkart;
-       
+
         if (operator === "Blinkit") return CampaignsColumnBlinkit;
         return [];
     }, [operator, brands, updatingCampaigns]);

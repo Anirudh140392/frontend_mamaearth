@@ -10,7 +10,8 @@ const BudgetCell = ({
   onSnackbarOpen,
   brand_name,
   brand,
-  ad_type_label
+  ad_type_label,
+  payloadKey = "Budget" // Add this
 }) => {
   const [budget, setBudget] = useState(value);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -27,21 +28,27 @@ const BudgetCell = ({
       if (!token) throw new Error("No access token found");
       setIsUpdating(true);
 
-      const payload = {
-        platform: platform,
-        Campaign_ID: campaignId,
-        Budget: Number(budget),
-        
-        // brand_name: brand_name || brand || ""
-      };
+      let url;
+      let payload;
 
-      // Build the URL with platform as query parameter
-      const platformLower = platform.toLowerCase();
-      const url = `https://react-api-script.onrender.com/mamaearth/budgetChange?platform=${platform}`;
+      if (payloadKey === "daily_budget" && platform?.toLowerCase() === "flipkart") {
+        url = `https://react-api-script.onrender.com/mamaearth/update-flipkart-daily-budget?platform=flipkart`;
+        payload = {
+          campaign_id: campaignId,
+          new_budget: Number(budget)
+        };
+      } else {
+        url = `https://react-api-script.onrender.com/mamaearth/budgetChange?platform=${platform}`;
+        payload = {
+          platform: platform,
+          Campaign_ID: campaignId,
+          [payloadKey]: Number(budget),
+        };
+      }
 
-      console.log("Updating budget with payload:", payload);
+      console.log(`Updating ${payloadKey} with payload:`, payload);
       const response = await fetch(url, {
-        method: "PUT",
+        method: (payloadKey === "daily_budget" && platform?.toLowerCase() === "flipkart") ? "POST" : "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
