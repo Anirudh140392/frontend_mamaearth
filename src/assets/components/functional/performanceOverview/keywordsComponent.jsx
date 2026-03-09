@@ -199,6 +199,12 @@ const KeywordsComponent = () => {
                         row.match_type === updatedKeywordType) {
                         return { ...row, bid_api: newBid };
                     }
+                    if (operator === "Blinkit" &&
+                        row.campaign_id === campaignId &&
+                        row.keyword === updatedKeyword &&
+                        row.keyword_type === updatedKeywordType) {
+                        return { ...row, avg_cpm: newBid };
+                    }
                     return row;
                 }),
             };
@@ -240,6 +246,12 @@ const KeywordsComponent = () => {
                             row.keyword === updatedKeyword &&
                             row.match_type === updatedKeywordType) {
                             return { ...row, bid_api: newBid };
+                        }
+                        if (operator === "Blinkit" &&
+                            row.campaign_id === campaignId &&
+                            row.keyword === updatedKeyword &&
+                            row.keyword_type === updatedKeywordType) {
+                            return { ...row, avg_cpm: newBid };
                         }
                         return row;
                     }),
@@ -423,12 +435,12 @@ const KeywordsComponent = () => {
             ),
         },
     ];
-      const KeywordsColumnBlinkit = [
+    const KeywordsColumnBlinkit = [
         {
             field: "keyword",
             headerName: "TARGET",
             minWidth: 150,
-          
+
         },
 
         {
@@ -440,6 +452,23 @@ const KeywordsComponent = () => {
                 const matchType = params.row.keyword_type;
                 return matchType && matchType !== "" ? matchType : "N/A";
             },
+        },
+
+        {
+            field: "avg_cpm",
+            headerName: "BID",
+            minWidth: 200,
+            renderCell: (params) => (
+                <BidCell
+                    value={params.row.avg_cpm}
+                    campaignId={params.row.campaign_id}
+                    keyword={params.row.keyword}
+                    keywordType={params.row.keyword_type}
+                    platform={operator}
+                    onUpdate={handleBidUpdate}
+                    onSnackbarOpen={handleSnackbarOpen}
+                />
+            ),
         },
 
         {
@@ -695,7 +724,7 @@ const KeywordsComponent = () => {
         },
     ];
 
-  
+
 
     const columns = useMemo(() => {
         if (operator === "Flipkart") return KeywordsColumnFlipkart;

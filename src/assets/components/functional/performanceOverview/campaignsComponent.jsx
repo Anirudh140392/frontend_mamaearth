@@ -161,7 +161,7 @@ const CampaignsComponent = (props, ref) => {
                         <Switch
                             checked={isStatusActive(statusLabel)}
                             onChange={() =>
-                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label)
+                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label, params.row.campaign_name)
                             }
                         />
                         <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
@@ -385,7 +385,7 @@ const CampaignsComponent = (props, ref) => {
                         <Switch
                             checked={isStatusActive(statusLabel)}
                             onChange={() =>
-                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label)
+                                handleToggleB(params.row.campaign_id, statusLabel, params.row.ad_type_label, params.row.campaign_name)
                             }
                         />
                         <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
@@ -772,7 +772,7 @@ const CampaignsComponent = (props, ref) => {
         }
     };
 
-    const handleToggle = (campaignId, currentStatus, ad_type_label) => {
+    const handleToggle = (campaignId, currentStatus, ad_type_label, campaignName) => {
         console.log('currentStatus', currentStatus)
         // Determine new status based on current status
         const statusStr = String(currentStatus).toUpperCase().trim();
@@ -788,6 +788,7 @@ const CampaignsComponent = (props, ref) => {
         setConfirmation({
             show: true,
             campaignId,
+            campaignName,
             campaignType: statusStr,
             adType: ad_type_label,
             currentStatus,
@@ -795,11 +796,11 @@ const CampaignsComponent = (props, ref) => {
         });
     };
 
-    const handleToggleB = (campaignId, currentStatus, ad_type_label) => {
+    const handleToggleB = (campaignId, currentStatus, ad_type_label, campaignName) => {
         console.log('currentStatus', currentStatus)
         // Determine new status based on current status
         const statusStr = String(currentStatus).toUpperCase().trim();
-        console.log("Toggling campaign:", campaignId, "Current status:", statusStr, "Ad Type:", ad_type_label);
+        console.log("Toggling campaign:", campaignId, "Current status:", statusStr);
         let newStatus;
 
         if (statusStr === 'ACTIVE' || statusStr === 'ON_HOLD') {
@@ -811,6 +812,7 @@ const CampaignsComponent = (props, ref) => {
         setConfirmation({
             show: true,
             campaignId,
+            campaignName,
             campaignType: statusStr,
             adType: ad_type_label,
             currentStatus,
@@ -818,13 +820,13 @@ const CampaignsComponent = (props, ref) => {
         });
     };
 
-    const updateCampaignStatus = (campaignId, newStatus, ad_type_label) => {
-        setConfirmation({ show: false, campaignId: null, campaignType: null, ad_type_label: null, currentStatus: null });
+    const updateCampaignStatus = (campaignId, newStatus, ad_type_label, campaignName) => {
+        setConfirmation({ show: false, campaignId: null, campaignType: null, ad_type_label: null, currentStatus: null, campaignName: null });
         setUpdatingCampaigns(prev => ({ ...prev, [campaignId]: true }));
-        confirmStatusChange(campaignId, newStatus, ad_type_label);
+        confirmStatusChange(campaignId, newStatus, ad_type_label, campaignName);
     };
 
-    const confirmStatusChange = async (campaignId, newStatus, ad_type_label) => {
+    const confirmStatusChange = async (campaignId, newStatus, ad_type_label, campaignName) => {
         try {
 
             // Set loading state for this campaign
@@ -832,14 +834,25 @@ const CampaignsComponent = (props, ref) => {
 
             const token = localStorage.getItem("accessToken");
 
-            // Determine action based on new status
-            const action = (newStatus === 'ACTIVE' || newStatus === 'ON_HOLD') ? 'PAUSE' : 'START';
-
             const requestBody = {
                 platform: operator,
-                ad_type: ad_type_label,
-                campaign_id: campaignId,
+                campaign_id: Number(campaignId),
+                campaign_name: campaignName,
+                brand_name: selectedBrand
             };
+
+            // Determine action based on newStatus
+            let action;
+            if (newStatus === 'STOP' || newStatus === 'PAUSE' || newStatus === 'STOPPED') {
+                action = 'PAUSE';
+            } else {
+                action = 'START';
+            }
+            requestBody.action = action;
+
+            if (ad_type_label && operator !== "Blinkit") {
+                requestBody.ad_type = ad_type_label;
+            }
 
             // Build the URL with platform as query parameter (lowercase)
             const platformLower = operator.toLowerCase();
@@ -968,17 +981,17 @@ const CampaignsComponent = (props, ref) => {
                             setUpdatingCampaigns(prev => ({ ...prev, [campaignId]: true }));
                             try {
                                 const token = localStorage.getItem("accessToken");
-                                // Build payload as required - send currentStatus for Zepto instead of the new status
+                                // Build payload as required
                                 const payload = {
                                     campaign_id: campaignId,
-                                    status: currentStatus,
+                                    action: newStatus === "ACTIVE" ? "START" : "PAUSE",
                                     platform: "zepto",
                                     brand_name: brandName
                                 };
 
                                 console.log("Sending Zepto play-pause request:", payload);
 
-                                const response = await fetch("https://react-api-script.onrender.com/mamaearth/campaign-play-pause", {
+                                const response = await fetch("https://react-api-script.onrender.com/mamaearth/play-pause?platform=zepto", {
                                     method: "PUT",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -1058,7 +1071,7 @@ const CampaignsComponent = (props, ref) => {
                             Cancel
                         </Button>
                         <Button
-                            onClick={() => updateCampaignStatus(confirmation.campaignId, confirmation.campaignType, confirmation.adType)}
+                            onClick={() => updateCampaignStatus(confirmation.campaignId, confirmation.campaignType, confirmation.adType, confirmation.campaignName)}
                             color="primary"
                         >
                             Confirm
