@@ -29,7 +29,7 @@ const HEADERS = [
     { key: "CTR", label: "CTR" },
     { key: "ACOS", label: "ACOS" },
     { key: "CVR", label: "CVR" },
-    { key: "status", label: "Status" },
+    
 ];
 
 const ProductWiseView = () => {
@@ -155,7 +155,7 @@ const ProductWiseView = () => {
                     mb: 2,
                 }}
             >
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>Product View</Typography>
+                <Typography variant="h5" >Product View</Typography>
                 <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
                     <TextField
                         select
