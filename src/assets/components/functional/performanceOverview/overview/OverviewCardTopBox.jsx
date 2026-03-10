@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Card, Container } from "react-bootstrap";
+import { Card, Container, Spinner } from "react-bootstrap";
 import {
   LineChart,
   Line,
@@ -34,13 +34,12 @@ function roasColor(roas) {
 const OverviewCardTopBox = ({ overViewData }) => {
   const [showInsightsPanel, setShowInsightsPanel] = useState(false);
   const [chartData, setChartData] = useState({});
-  const [loading, setLoading] = useState(false);
-
   const dataContext = useContext(overviewContext);
-  const { dateRange, formatDate } = dataContext || {};
+  const { dateRange, formatDate, overviewLoading } = dataContext || {};
   const [searchParams] = useSearchParams();
   const operator = searchParams.get("operator");
 
+  const loading = overviewLoading;
   const metrics = overViewData?.metrics_data || {};
 
   // Update chart data when overViewData changes
@@ -205,13 +204,19 @@ const OverviewCardTopBox = ({ overViewData }) => {
                 {/* Value */}
                 <h3
                   className="fw-bold mb-1"
-                  style={{ color: card.color, fontSize: "1.75rem" }}
+                  style={{ color: card.color, fontSize: "1.75rem", minHeight: "2.1rem" }}
                 >
-                  {card.formatted}
+                  {loading ? (
+                    <Spinner animation="border" size="sm" style={{ color: card.color }} />
+                  ) : (
+                    card.formatted
+                  )}
                 </h3>
 
                 {/* Subtitle */}
-                <p className="small text-muted mb-3">{card.sub}</p>
+                <p className="small text-muted mb-3" style={{ minHeight: "1.2rem" }}>
+                  {card.sub}
+                </p>
 
                 {/* Line Chart */}
                 <div style={{ height: 80, minHeight: 80, width: "100%" }} className="mt-2">
