@@ -11,6 +11,8 @@ import OnePercentageDataComponent from "../../common/onePercentageComponent";
 import OverviewCardTopBox from "./overview/OverviewCardTopBox";
 import GoalsOverview from "./GoalsOverviews/GoalsOverview";
 import AggregatedView from "./overview/AggregatedView";
+import ProductWiseView from "./overview/ProductWiseView";
+
 
 const OverviewComponent = () => {
 
@@ -37,13 +39,13 @@ const OverviewComponent = () => {
         { field: "Campaign_Tags", headerName: "CAMPAIGN TAGS", minWidth: 200, type: "string", align: "left", headerAlign: "left" },
         { field: "Spend", headerName: "SPEND", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Clicks", headerName: "CLICKS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-         { field: "CPM", headerName: "CPM", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-          { field: "CPC", headerName: "CPC", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
+        { field: "CPM", headerName: "CPM", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
+        { field: "CPC", headerName: "CPC", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Impressions", headerName: "IMPRESSIONS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Sales", headerName: "SALES", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Orders", headerName: "ORDERS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "ROAS", headerName: "ROAS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-       
+
         { field: "ACOS", headerName: "ACOS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
     ];
 
@@ -72,7 +74,7 @@ const OverviewComponent = () => {
             align: "left",
             headerAlign: "left",
         },
-         {
+        {
             field: "CPM",
             headerName: "CPM",
             minWidth: 150,
@@ -121,7 +123,8 @@ const OverviewComponent = () => {
             align: "left",
             headerAlign: "left",
         },
-        {  field: "CTR",
+        {
+            field: "CTR",
             headerName: "CTR",
             minWidth: 150,
             type: "number",
@@ -129,7 +132,7 @@ const OverviewComponent = () => {
             headerAlign: "left",
 
         },
-       
+
         {
             field: "ACOS",
             headerName: "ACOS",
@@ -139,7 +142,7 @@ const OverviewComponent = () => {
             headerAlign: "left",
         },
     ];
-     const CategoryColumnsFlipkart = [
+    const CategoryColumnsFlipkart = [
         {
             field: "Campaign_Tags",
             headerName: "CAMPAIGN TAGS",
@@ -164,7 +167,7 @@ const OverviewComponent = () => {
             align: "left",
             headerAlign: "left",
         },
-         {
+        {
             field: "CPM",
             headerName: "CPM",
             minWidth: 150,
@@ -213,7 +216,8 @@ const OverviewComponent = () => {
             align: "left",
             headerAlign: "left",
         },
-        {  field: "CTR",
+        {
+            field: "CTR",
             headerName: "CTR",
             minWidth: 150,
             type: "number",
@@ -221,7 +225,7 @@ const OverviewComponent = () => {
             headerAlign: "left",
 
         },
-       
+
         {
             field: "ACOS",
             headerName: "ACOS",
@@ -238,13 +242,13 @@ const OverviewComponent = () => {
         { field: "Campaign_Tags", headerName: "CAMPAIGN TAGS", minWidth: 200, type: "string", align: "left", headerAlign: "left" },
         { field: "Spend", headerName: "SPEND", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Clicks", headerName: "CLICKS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-         { field: "CPC", headerName: "CPC", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-           { field: "CPM", headerName: "CPM", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
+        { field: "CPC", headerName: "CPC", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
+        { field: "CPM", headerName: "CPM", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Impressions", headerName: "IMPRESSIONS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Sales", headerName: "SALES", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "Orders", headerName: "ORDERS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
         { field: "ROAS", headerName: "ROAS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
-       
+
         { field: "ACOS", headerName: "ACOS", minWidth: 150, type: "number", align: "left", headerAlign: "left" },
     ]
 
@@ -455,9 +459,11 @@ const OverviewComponent = () => {
                                     columns={columns}
                                     data={filteredCatData} />
                             </div>
+                            {operator === "Flipkart" && <ProductWiseView />}
                             <div className="shadow-box-con top-overview-con">
                                 <AggregatedView />
                             </div>
+
                             <div className="shadow-box-con top-overview-con">
                                 <GoalsOverview />
                             </div>
